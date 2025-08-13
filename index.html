@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio — Balkis Trabelsi</title>
+  <meta name="description" content="Portfolio artistique de Balkis Trabelsi — Étudiante en Génie Logiciel, développeuse full stack."/>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;900&family=Fira+Code:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet" />
+
+  <!-- GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#0a0a0f;
+      --card:#101018;
+      --glass:rgba(255,255,255,.08);
+      --muted:#9aa3b2;
+      --text:#eef2ff;
+      --primary:#8a5bff; /* violet néon */
+      --secondary:#00e0ff; /* cyan néon */
+      --accent:#ff3ca6; /* magenta */
+      --ring: 0 0 0 2px rgba(138,91,255,.25), 0 0 40px rgba(0,224,255,.18), inset 0 0 40px rgba(255,60,166,.12);
+      --radius:22px;
+      --shadow:0 10px 40px rgba(0,0,0,.35);
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; color:var(--text); background:var(--bg);
+      font-family:"Outfit",system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      overflow-x:hidden;
+    }
+
+    /* BACKGROUND: nebulas + stars */
+    .bg{
+      position:fixed; inset:0; z-index:-2; pointer-events:none; overflow:hidden;
+      background: radial-gradient(1200px 800px at 10% 10%, rgba(138,91,255,.25), transparent 60%),
+                  radial-gradient(900px 700px at 90% 20%, rgba(0,224,255,.18), transparent 65%),
+                  radial-gradient(900px 700px at 50% 100%, rgba(255,60,166,.18), transparent 60%),
+                  #07070d;
+      filter:saturate(110%);
+    }
+    .stars, .stars:before, .stars:after{
+      content:""; position:absolute; inset:-2000px; background-repeat:repeat;
+      background-image: radial-gradient(2px 2px at 20px 30px, rgba(255,255,255,.6) 50%, transparent 51%),
+                        radial-gradient(1px 1px at 120px 80px, rgba(255,255,255,.4) 50%, transparent 51),
+                        radial-gradient(1.5px 1.5px at 320px 120px, rgba(255,255,255,.5) 50%, transparent 51);
+      background-size: 400px 400px;
+      animation: drift 120s linear infinite;
+      opacity:.5;
+    }
+    .stars:before{animation-duration:180s; opacity:.35}
+    .stars:after{animation-duration:240s; opacity:.25}
+    @keyframes drift{from{transform:translate3d(0,0,0)} to{transform:translate3d(400px,0,0)}}
+
+    /* HEADER */
+    header{
+      position:fixed; inset-inline:0; top:16px; z-index:50; display:flex; justify-content:center;
+    }
+    .nav{
+      display:flex; align-items:center; gap:16px; padding:10px 16px; border-radius:999px;
+      background:linear-gradient( to bottom, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      box-shadow: var(--shadow);
+      border:1px solid rgba(255,255,255,.1);
+      backdrop-filter: blur(10px);
+    }
+    .brand{
+      font-weight:800; letter-spacing:.5px; display:flex; align-items:center; gap:10px;
+      padding:.35rem .9rem; border-radius:999px; background:rgba(255,255,255,.06);
+    }
+    .brand .dot{width:10px; height:10px; border-radius:50%;
+      background:radial-gradient(circle at 30% 30%, var(--secondary), transparent 60%), var(--primary);
+      box-shadow:0 0 20px var(--secondary);
+    }
+    .nav a{
+      color:var(--text); text-decoration:none; font-weight:600; opacity:.9; padding:.5rem .9rem;
+      border-radius:999px; transition:.25s ease;
+    }
+    .nav a:hover{background:rgba(255,255,255,.08)}
+    .cta{
+      background:linear-gradient(135deg, var(--primary), var(--accent));
+      border:none; color:white; padding:.55rem 1rem; border-radius:999px; font-weight:700; cursor:pointer;
+      box-shadow:0 10px 30px rgba(138,91,255,.35), 0 0 0 1px rgba(255,255,255,.15) inset;
+    }
+
+    /* SECTIONS WRAPPER */
+    .wrap{max-width:1200px; margin:0 auto; padding:120px 20px 80px}
+
+    /* HERO */
+    .hero{display:grid; grid-template-columns:1.1fr .9fr; align-items:center; gap:40px; min-height:85svh}
+    .headline{
+      font-size: clamp(40px, 7vw, 84px);
+      line-height: .95; font-weight:900; letter-spacing:-.02em;
+      background: linear-gradient(90deg, #fff, var(--secondary), var(--primary), var(--accent));
+      -webkit-background-clip: text; background-clip:text; color:transparent; filter:drop-shadow(0 10px 30px rgba(0,224,255,.18));
+    }
+    .hero p{color:var(--muted); font-size: clamp(16px, 1.6vw, 20px); margin:16px 0 26px}
+    .hero .actions{display:flex; gap:12px; flex-wrap:wrap}
+    .btn{position:relative; display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius:12px; font-weight:700; text-decoration:none; color:#0c0c12}
+    .btn.primary{background:linear-gradient(135deg,var(--secondary),var(--primary)); color:#061218; box-shadow:var(--ring)}
+    .btn.ghost{background:rgba(255,255,255,.06); color:var(--text); border:1px solid rgba(255,255,255,.12)}
+    .btn i{font-size:20px}
+
+    .avatar{
+      position:relative; width:min(420px, 80%); aspect-ratio:1/1; margin-inline:auto;
+      border-radius:28px; overflow:hidden; background:linear-gradient(135deg, rgba(138,91,255,.25), rgba(0,224,255,.25));
+      box-shadow: 0 20px 80px rgba(0,0,0,.6), 0 0 0 1px rgba(255,255,255,.06) inset;
+    }
+    .avatar img{width:100%; height:100%; object-fit:cover; filter:contrast(1.05) saturate(1.05)}
+    .avatar::before{content:""; position:absolute; inset:-40% -40% auto auto; width:140%; height:140%;
+      background: radial-gradient(closest-side, rgba(0,224,255,.28), transparent 70%);
+      filter: blur(40px); animation:float 8s ease-in-out infinite; pointer-events:none
+    }
+    @keyframes float{50%{transform:translate3d(0, -12px, 0) scale(1.03)}}
+
+    /* MARQUEE */
+    .marquee{position:relative; overflow:hidden; margin:40px 0 0; border-radius:14px; border:1px solid rgba(255,255,255,.08)}
+    .marquee .track{display:flex; gap:40px; padding:14px 0; animation:scroll 30s linear infinite; background:rgba(255,255,255,.03)}
+    .pill{padding:8px 14px; border-radius:999px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1); color:#dfe7ff; font-weight:600}
+    @keyframes scroll{to{transform:translateX(-50%)}}
+
+    /* SECTION TITLES */
+    .section{margin-top:90px}
+    .section h2{font-size:clamp(28px,4vw,44px); margin:0 0 16px; font-weight:800}
+    .kicker{color:var(--muted); text-transform:uppercase; letter-spacing:.14em; font-size:12px; margin-bottom:8px}
+
+    /* PROJECTS */
+    .grid{display:grid; gap:18px}
+    .grid.cols-3{grid-template-columns:repeat(3,1fr)}
+    @media (max-width: 980px){.hero{grid-template-columns:1fr}.grid.cols-3{grid-template-columns:1fr 1fr}}
+    @media (max-width: 640px){.grid.cols-3{grid-template-columns:1fr}}
+
+    .card{
+      position:relative; background:linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.03));
+      border:1px solid rgba(255,255,255,.08); border-radius:var(--radius); padding:20px; box-shadow:var(--shadow);
+      overflow:hidden; transition:transform .35s ease, border-color .35s ease, background .35s ease;
+    }
+    .card:hover{transform:translateY(-6px); border-color:rgba(0,224,255,.25); background:linear-gradient(180deg, rgba(255,255,255,.09), rgba(255,255,255,.04))}
+    .thumb{position:relative; border-radius:16px; overflow:hidden; aspect-ratio: 16/10; margin-bottom:14px; background:#0e0e17}
+    .thumb img{width:100%; height:100%; object-fit:cover}
+    .badge{display:inline-flex; align-items:center; gap:8px; font-weight:700; font-size:12px; color:#dff7ff; padding:6px 10px; border-radius:999px; background:rgba(0,224,255,.12); border:1px solid rgba(0,224,255,.25)}
+    .meta{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
+    .meta .tag{font-family:"Fira Code", monospace; font-size:12px; padding:6px 10px; border-radius:999px; color:#d8d9ff; background:rgba(138,91,255,.12); border:1px solid rgba(138,91,255,.25)}
+
+    /* SKILLS */
+    .skills{display:grid; grid-template-columns:repeat(6,1fr); gap:14px}
+    @media (max-width:900px){.skills{grid-template-columns:repeat(3,1fr)}}
+    @media (max-width:560px){.skills{grid-template-columns:repeat(2,1fr)}}
+    .skill{display:flex; align-items:center; gap:10px; padding:12px 14px; border-radius:12px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08)}
+    .skill i{font-size:20px; color:var(--secondary)}
+
+    /* EXPERIENCE & EDUCATION */
+    .timeline{display:grid; gap:14px}
+    .item{padding:16px; border-radius:14px; background:rgba(255,255,255,.05); border:1px solid rgba(255,255,255,.08)}
+    .item .when{color:var(--muted); font-family:"Fira Code", monospace}
+
+    /* CONTACT */
+    .contact{display:grid; grid-template-columns:1fr .9fr; gap:24px; align-items:start}
+    @media (max-width:900px){.contact{grid-template-columns:1fr}}
+    form{display:grid; gap:12px}
+    input, textarea{background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); border-radius:12px; padding:12px 14px; color:var(--text); outline:none}
+    textarea{min-height:140px; resize:vertical}
+    input:focus, textarea:focus{box-shadow:0 0 0 3px rgba(0,224,255,.18)}
+    .contact .card{height:100%}
+
+    footer{padding:40px 20px; text-align:center; color:var(--muted)}
+    .socials{display:flex; justify-content:center; gap:14px; margin-top:10px}
+    .socials a{display:grid; place-items:center; width:40px; height:40px; border-radius:12px; background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.12); color:var(--text); text-decoration:none}
+    .socials a:hover{border-color:rgba(0,224,255,.35)}
+  </style>
+</head>
+<body>
+  <div class="bg"><div class="stars"></div></div>
+
+  <!-- HEADER -->
+  <header>
+    <nav class="nav" aria-label="Navigation principale">
+      <div class="brand"><span class="dot"></span> Balkis <strong>Trabelsi</strong></div>
+      <a href="#hero">Accueil</a>
+      <a href="#projets">Projets</a>
+      <a href="#competences">Compétences</a>
+      <a href="#experience">Expérience</a>
+      <a href="#formation">Formation</a>
+      <a href="#contact" class="cta">Me Contacter</a>
+    </nav>
+  </header>
+
+  <main class="wrap">
+    <!-- HERO -->
+    <section id="hero" class="hero">
+      <div>
+        <div class="kicker">Étudiante en Génie Logiciel • Développeuse Full&nbsp;Stack</div>
+        <h1 class="headline">Créer des <em>expériences</em> <br> numériques <span aria-hidden="true">immersives</span></h1>
+        <p>Je conçois et développe des applications qui allient <strong>esthétique</strong> et <strong>performance</strong>. Passionnée par le design d’interaction, les systèmes distribués, et l’UX, je transforme les idées en produits concrets.</p>
+        <div class="actions">
+          <a class="btn primary" href="https://www.balkistrprtfolio.com" target="_blank" rel="noopener"><i class='bx bx-globe'></i> Voir mon site</a>
+          <a class="btn ghost" href="#projets"><i class='bx bx-collection'></i> Mes projets</a>
+          <a class="btn ghost" href="mailto:balkistrs@gmail.com"><i class='bx bxs-envelope'></i> Me joindre</a>
+        </div>
+        <div class="marquee" aria-hidden="true">
+          <div class="track">
+            <span class="pill">HTML</span>
+            <span class="pill">CSS</span>
+            <span class="pill">JavaScript</span>
+            <span class="pill">React.js</span>
+            <span class="pill">MongoDB</span>
+            <span class="pill">SQL</span>
+            <span class="pill">Conception Web</span>
+            <span class="pill">Full‑Stack</span>
+            <span class="pill">Résolution de problèmes</span>
+            <span class="pill">Apprentissage rapide</span>
+            <span class="pill">Travail en équipe</span>
+            <span class="pill">Organisation</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <figure class="avatar" aria-label="Espace pour ma photo">
+          <img src="" alt="Portrait de Balkis" />
+        </figure>
+      </div>
+    </section>
+
+    <!-- PROJETS -->
+    <section id="projets" class="section">
+      <div class="kicker">Projets</div>
+      <h2>Mes réalisations phares</h2>
+      <div class="grid cols-3">
+        <!-- PROJET 1: Blugin -->
+        <article class="card">
+          <div class="thumb">
+            <!-- Remplace BLUGIN_LOGO.png / BLUGIN_PHOTO.jpg -->
+            <img src="bulgin.webp" alt="Application de gestion de stock — Blugin" />
+          </div>
+          <div class="badge"><i class='bx bxs-business'></i> Blugin — Stage d'été</div>
+          <h3>Web App de gestion de stock</h3>
+          <p>Conception et développement d’une application web pour la gestion de stock de l’entreprise <strong>Blugin</strong>. Architecture front‑end moderne, interfaces ergonomiques, tableaux de bord et suivi en temps réel.</p>
+          <div class="meta">
+            <span class="tag">Durée&nbsp;: 2&nbsp;mois (été&nbsp;2024)</span>
+            <span class="tag">Stack&nbsp;: HTML · CSS · JS · React</span>
+          </div>
+        </article>
+        <!-- PROJET 2: PFA mobile 2025 -->
+        <article class="card">
+          <div class="thumb">
+            <img src="Capture d'écran 2025-08-13 221342.png"alt="Application mobile innovante — PFA 2025" />
+          </div>
+          <div class="badge"><i class='bx bx-mobile-alt'></i> PFA — 2025</div>
+          <h3>Application mobile innovante</h3>
+          <p>Création d’une application mobile centrée utilisateur : flux de navigation fluide, maquettes haute fidélité, persistance des données et prototypage rapide.</p>
+          <div class="meta">
+            <span class="tag">UX · Prototypage</span>
+            <span class="tag">Front mobile</span>
+          </div>
+        </article>
+        <!-- PROJET 3: Portfolios perso -->
+        <article class="card">
+          <div class="thumb">
+            <img src="Capture d'écran 2025-08-13 221922.png" alt="Création de portfolios personnels" />
+          </div>
+          <div class="badge"><i class='bx bx-palette'></i> Créatif</div>
+          <h3>Création de portfolios personnels</h3>
+          <p>Design & développement de portfolios artistiques, intégrant animations, storytelling visuel et performances optimisées.</p>
+          <div class="meta">
+            <span class="tag">Design interactif</span>
+            <span class="tag">Performance</span>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- COMPÉTENCES -->
+    <section id="competences" class="section">
+      <div class="kicker">Compétences</div>
+      <h2>Mon stack & mes atouts</h2>
+      <div class="skills">
+        <div class="skill"><i class='bx bxl-html5'></i> HTML</div>
+        <div class="skill"><i class='bx bxl-css3'></i> CSS</div>
+        <div class="skill"><i class='bx bxl-javascript'></i> JavaScript</div>
+        <div class="skill"><i class='bx bxs-data'></i> SQL</div>
+        <div class="skill"><i class='bx bxl-mongodb'></i> MongoDB</div>
+        <div class="skill"><i class='bx bxl-react'></i> React.js</div>
+        <div class="skill"><i class='bx bx-certification'></i> Certification Full‑Stack</div>
+        <div class="skill"><i class='bx bx-layout'></i> Conception & Dev Web</div>
+        <div class="skill"><i class='bx bx-line-chart'></i> Analyse de données</div>
+        <div class="skill"><i class='bx bx-brain'></i> Résolution de problèmes</div>
+        <div class="skill"><i class='bx bx-group'></i> Travail en équipe</div>
+        <div class="skill"><i class='bx bx-time-five'></i> Organisation</div>
+      </div>
+    </section>
+
+    <!-- EXPÉRIENCE -->
+    <section id="experience" class="section">
+      <div class="kicker">Expérience</div>
+      <h2>Stages & formations</h2>
+      <div class="timeline">
+        <div class="item">
+          <strong>Formation Développement Web — MasterClass, Denden</strong>
+          <div class="when">06/2023 → 12/2023</div>
+          <p>Développement web (HTML, CSS, JavaScript, PHP). Conception/optimisation de bases SQL. Collaboration en équipe pour livrer dans les délais.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- FORMATION -->
+    <section id="formation" class="section">
+      <div class="kicker">Formation</div>
+      <h2>Parcours académique</h2>
+      <div class="timeline">
+        <div class="item">
+          <strong>1ère année — Génie Logiciel</strong> · Université ISLAIB, Béja
+          <div class="when">2023 → 2024</div>
+          <p>Cours pertinents&nbsp;: Conception & développement logiciel, Bases de données, Programmation web avancée, Algorithmique.</p>
+        </div>
+        <div class="item">
+          <strong>Baccalauréat Sciences de l'informatique</strong>
+          <div class="when">2023 · Mention</div>
+          <p>Réussite avec mention, orientation informatique.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- LANGUES & CONTACT -->
+    <section id="contact" class="section contact">
+      <div>
+        <div class="kicker">Langues</div>
+        <h2>Communication</h2>
+        <div class="grid">
+          <div class="card"><strong>Français</strong> — C1</div>
+          <div class="card"><strong>Anglais</strong> — B2</div>
+          <div class="card"><strong>Italien</strong> — B1</div>
+        </div>
+        <div class="section" style="margin-top:22px">
+          <div class="kicker">Contact</div>
+          <div class="card">
+            <p><i class='bx bxs-envelope'></i> <a href="mailto:balkistrs@gmail.com" style="color:inherit;text-decoration:none">balkistrs@gmail.com</a></p>
+            <p><i class='bx bx-globe'></i> <a href="https://www.balkistrprtfolio.com" target="_blank" rel="noopener" style="color:inherit;text-decoration:none">www.balkistrprtfolio.com</a></p>
+            <div class="socials">
+              <a href="https://github.com/balkistrs" target="_blank" rel="noopener" aria-label="GitHub"><i class='bx bxl-github'></i></a>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener" aria-label="LinkedIn"><i class='bx bxl-linkedin'></i></a>
+              <a href="mailto:balkistrs@gmail.com" aria-label="Email"><i class='bx bxs-envelope'></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="kicker">Me laisser un message</div>
+        <h2>Discutons de votre projet</h2>
+        <form action="#" method="post" onsubmit="event.preventDefault(); alert('Merci ! Votre message a été envoyé.');">
+          <input type="text" name="name" placeholder="Nom complet" required>
+          <input type="email" name="email" placeholder="Email" required>
+          <textarea name="message" placeholder="Votre message..." required></textarea>
+          <button class="btn primary" type="submit"><i class='bx bx-send'></i> Envoyer</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    © 2024 — Balkis Trabelsi. Tous droits réservés.
+  </footer>
+
+  <script>
+    // GSAP animations
+    gsap.registerPlugin(ScrollTrigger);
+    gsap.from('.brand, .nav a', {y:-20, opacity:0, duration:0.6, stagger:0.06});
+    gsap.from('.headline', {opacity:0, y:20, duration:1});
+    gsap.from('.avatar', {opacity:0, scale:.94, duration:1, delay:.15});
+    gsap.utils.toArray('.section, .card, .skill, .item').forEach(el=>{
+      gsap.from(el, {scrollTrigger:{trigger:el, start:'top 80%'}, y:24, opacity:0, duration:.8, ease:'power2.out'});
+    });
+  </script>
+</body>
+</html>
